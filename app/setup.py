@@ -1,5 +1,5 @@
-from db import Base, engine
-from models import Animal
+from app.db import Base, engine
+from app.models import Animal
 
 #run only once to create table
 Base.metadata.create_all(bind=engine)

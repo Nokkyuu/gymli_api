@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api import animals
+from app.api import animals
 
 app = FastAPI(title="Animal API")
 
