@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "gymlidata.postgres.database.azure.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "gymlidata",
+            "database": "gymlidata",
+            "username": "gymcoach",
+            "password": "!PushUp100!"
+        }
+    ]
+}
