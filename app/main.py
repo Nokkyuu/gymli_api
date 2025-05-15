@@ -13,7 +13,7 @@ def read_root():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://icy-ground-0e9ef4303.6.azurestaticapps.net/", "https://gymli.brgmnn.de/"],  # or specify: ["https://your-flutter-web-url"]
+    allow_origins=["https://icy-ground-0e9ef4303.6.azurestaticapps.net/", "https://gymli.brgmnn.de/", "*"],  # or specify: ["https://your-flutter-web-url"]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
