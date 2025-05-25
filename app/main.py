@@ -1,19 +1,23 @@
 from fastapi import FastAPI
-from app.api import animals
+from app.api import animals, exercises, training_sets, workouts, workout_units
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="Animal API")
+app = FastAPI(title="Gymli API")
 
+# Include all routers
 app.include_router(animals.router)
+app.include_router(exercises.router)
+app.include_router(training_sets.router)
+app.include_router(workouts.router)
+app.include_router(workout_units.router)
 
 @app.get("/")
 def read_root():
     return {"status": "API is running"}
 
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://icy-ground-0e9ef4303.6.azurestaticapps.net/", "https://gymli.brgmnn.de/", "*"],  # or specify: ["https://your-flutter-web-url"]
+    allow_origins=["https://icy-ground-0e9ef4303.6.azurestaticapps.net/", "https://gymli.brgmnn.de/", "*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
