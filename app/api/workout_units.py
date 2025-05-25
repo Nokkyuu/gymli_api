@@ -4,16 +4,13 @@ from typing import List, Optional
 from app import models, schemas
 from app.db import get_db
 
-router = APIRouter(
-    prefix="/api/workout-units",
-    tags=["workout_units"]
-)
+router = APIRouter()
 
 # =========================
 # WorkoutUnit Endpoints
 # =========================
 
-@router.get("/", response_model=List[schemas.WorkoutUnit])
+@router.get("/workout_units", response_model=List[schemas.WorkoutUnit])
 def read_workout_units(
     user_name: str = Query(..., description="Username to filter units by"), 
     workout_id: Optional[int] = Query(None, description="Workout ID to filter units by"), 
@@ -27,7 +24,7 @@ def read_workout_units(
         query = query.filter(models.WorkoutUnit.workout_id == workout_id)
     return query.all()
 
-@router.get("/{id}", response_model=schemas.WorkoutUnit)
+@router.get("/workout_units/{id}", response_model=schemas.WorkoutUnit)
 def read_workout_unit(id: int, db: Session = Depends(get_db)):
     """
     Get a single workout unit by its ID.
@@ -37,7 +34,7 @@ def read_workout_unit(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="WorkoutUnit not found")
     return wu
 
-@router.post("/", response_model=schemas.WorkoutUnit)
+@router.post("/workout_units", response_model=schemas.WorkoutUnit)
 def create_workout_unit(wu: schemas.WorkoutUnitCreate, db: Session = Depends(get_db)):
     """
     Create a new workout unit.
@@ -48,7 +45,7 @@ def create_workout_unit(wu: schemas.WorkoutUnitCreate, db: Session = Depends(get
     db.refresh(db_wu)
     return db_wu
 
-@router.put("/{id}", response_model=schemas.WorkoutUnit)
+@router.put("/workout_units/{id}", response_model=schemas.WorkoutUnit)
 def update_workout_unit(id: int, wu: schemas.WorkoutUnitCreate, db: Session = Depends(get_db)):
     """
     Replace a workout unit by its ID.
@@ -62,7 +59,7 @@ def update_workout_unit(id: int, wu: schemas.WorkoutUnitCreate, db: Session = De
     db.refresh(db_wu)
     return db_wu
 
-@router.delete("/{id}", response_model=dict)
+@router.delete("/workout_units/{id}", response_model=dict)
 def delete_workout_unit(id: int, db: Session = Depends(get_db)):
     """
     Delete a workout unit by its ID.

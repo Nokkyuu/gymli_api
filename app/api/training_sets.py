@@ -4,16 +4,13 @@ from typing import List, Optional
 from app import models, schemas
 from app.db import get_db
 
-router = APIRouter(
-    prefix="/api/training-sets",
-    tags=["training_sets"]
-)
+router = APIRouter()
 
 # =========================
 # TrainingSet Endpoints
 # =========================
 
-@router.get("/", response_model=List[schemas.TrainingSet])
+@router.get("/training_sets", response_model=List[schemas.TrainingSet])
 def read_training_sets(
     user_name: str = Query(..., description="Username to filter sets by"), 
     exercise_id: Optional[int] = Query(None, description="Exercise ID to filter sets by"), 
@@ -27,7 +24,7 @@ def read_training_sets(
         query = query.filter(models.TrainingSet.exercise_id == exercise_id)
     return query.all()
 
-@router.get("/{id}", response_model=schemas.TrainingSet)
+@router.get("/training_sets/{id}", response_model=schemas.TrainingSet)
 def read_training_set(id: int, db: Session = Depends(get_db)):
     """
     Get a single training set by its ID.
@@ -37,7 +34,7 @@ def read_training_set(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="TrainingSet not found")
     return ts
 
-@router.post("/", response_model=schemas.TrainingSet)
+@router.post("/training_sets", response_model=schemas.TrainingSet)
 def create_training_set(ts: schemas.TrainingSetCreate, db: Session = Depends(get_db)):
     """
     Create a new training set.
@@ -48,7 +45,7 @@ def create_training_set(ts: schemas.TrainingSetCreate, db: Session = Depends(get
     db.refresh(db_ts)
     return db_ts
 
-@router.put("/{id}", response_model=schemas.TrainingSet)
+@router.put("/training_sets/{id}", response_model=schemas.TrainingSet)
 def update_training_set(id: int, ts: schemas.TrainingSetCreate, db: Session = Depends(get_db)):
     """
     Replace a training set by its ID.
@@ -62,7 +59,7 @@ def update_training_set(id: int, ts: schemas.TrainingSetCreate, db: Session = De
     db.refresh(db_ts)
     return db_ts
 
-@router.delete("/{id}", response_model=dict)
+@router.delete("/training_sets/{id}", response_model=dict)
 def delete_training_set(id: int, db: Session = Depends(get_db)):
     """
     Delete a training set by its ID.

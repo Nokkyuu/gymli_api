@@ -4,16 +4,13 @@ from typing import List
 from app import models, schemas
 from app.db import get_db
 
-router = APIRouter(
-    prefix="/api/workouts",
-    tags=["workouts"]
-)
+router = APIRouter()
 
 # =========================
 # Workout Endpoints
 # =========================
 
-@router.get("/", response_model=List[schemas.Workout])
+@router.get("/workouts", response_model=List[schemas.Workout])
 def read_workouts(
     user_name: str = Query(..., description="Username to filter workouts by"),
     db: Session = Depends(get_db)
@@ -23,7 +20,7 @@ def read_workouts(
     """
     return db.query(models.Workout).filter(models.Workout.user_name == user_name).all()
 
-@router.get("/{id}", response_model=schemas.Workout)
+@router.get("/workouts/{id}", response_model=schemas.Workout)
 def read_workout(id: int, db: Session = Depends(get_db)):
     """
     Get a single workout by its ID.
@@ -33,7 +30,7 @@ def read_workout(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Workout not found")
     return workout
 
-@router.post("/", response_model=schemas.Workout)
+@router.post("/workouts", response_model=schemas.Workout)
 def create_workout(workout: schemas.WorkoutCreate, db: Session = Depends(get_db)):
     """
     Create a new workout.
@@ -44,7 +41,7 @@ def create_workout(workout: schemas.WorkoutCreate, db: Session = Depends(get_db)
     db.refresh(db_workout)
     return db_workout
 
-@router.put("/{id}", response_model=schemas.Workout)
+@router.put("/workouts/{id}", response_model=schemas.Workout)
 def update_workout(id: int, workout: schemas.WorkoutCreate, db: Session = Depends(get_db)):
     """
     Replace a workout by its ID.
@@ -58,7 +55,7 @@ def update_workout(id: int, workout: schemas.WorkoutCreate, db: Session = Depend
     db.refresh(db_workout)
     return db_workout
 
-@router.delete("/{id}", response_model=dict)
+@router.delete("/workouts/{id}", response_model=dict)
 def delete_workout(id: int, db: Session = Depends(get_db)):
     """
     Delete a workout by its ID.
