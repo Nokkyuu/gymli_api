@@ -3,16 +3,13 @@ from sqlalchemy.orm import Session
 from app.db import SessionLocal
 from app.models import Animal as DBAnimal
 from app.schemas import AnimalCreate, Animal
+from app.db import get_db
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/api/animals",
+    tags=["animals"]
+)
 
-# Dependency to get DB session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.post("/animals", response_model=Animal)
 def create_animal(animal: AnimalCreate, db: Session = Depends(get_db)):
