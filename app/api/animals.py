@@ -38,8 +38,8 @@ def update_animal(animal_id: int, updated: AnimalCreate, db: Session = Depends(g
     animal = db.query(DBAnimal).filter(DBAnimal.id == animal_id).first()
     if not animal:
         raise HTTPException(status_code=404, detail="Animal not found")
-    animal.name = updated.name
-    animal.sound = updated.sound
+    setattr(animal, "name", updated.name)
+    setattr(animal, "sound", updated.sound)
     db.commit()
     db.refresh(animal)
     return animal
