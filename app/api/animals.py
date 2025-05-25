@@ -3,10 +3,16 @@ from sqlalchemy.orm import Session
 from app.db import SessionLocal
 from app.models import Animal as DBAnimal
 from app.schemas import AnimalCreate, Animal
-from app.db import get_db
+#from app.db import get_db
 
 router = APIRouter()
 
+def get_db():
+    db: Session = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @router.post("/animals", response_model=Animal)
 def create_animal(animal: AnimalCreate, db: Session = Depends(get_db)):
