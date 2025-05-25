@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.post("/animals", response_model=Animal)
+@router.post("/", response_model=Animal)
 def create_animal(animal: AnimalCreate, db: Session = Depends(get_db)):
     db_animal = DBAnimal(name=animal.name, sound=animal.sound)
     db.add(db_animal)
@@ -19,18 +19,18 @@ def create_animal(animal: AnimalCreate, db: Session = Depends(get_db)):
     db.refresh(db_animal)
     return db_animal
 
-@router.get("/animals", response_model=list[Animal])
+@router.get("/", response_model=list[Animal])
 def get_animals(db: Session = Depends(get_db)):
     return db.query(DBAnimal).all()
 
-@router.get("/animals/{animal_id}", response_model=Animal)
+@router.get("/{animal_id}", response_model=Animal)
 def get_animal(animal_id: int, db: Session = Depends(get_db)):
     animal = db.query(DBAnimal).filter(DBAnimal.id == animal_id).first()
     if not animal:
         raise HTTPException(status_code=404, detail="Animal not found")
     return animal
 
-@router.put("/animals/{animal_id}", response_model=Animal)
+@router.put("/{animal_id}", response_model=Animal)
 def update_animal(animal_id: int, updated: AnimalCreate, db: Session = Depends(get_db)):
     animal = db.query(DBAnimal).filter(DBAnimal.id == animal_id).first()
     if not animal:
@@ -41,7 +41,7 @@ def update_animal(animal_id: int, updated: AnimalCreate, db: Session = Depends(g
     db.refresh(animal)
     return animal
 
-@router.delete("/animals/{animal_id}")
+@router.delete("/{animal_id}")
 def delete_animal(animal_id: int, db: Session = Depends(get_db)):
     animal = db.query(DBAnimal).filter(DBAnimal.id == animal_id).first()
     if not animal:
