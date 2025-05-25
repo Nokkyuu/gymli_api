@@ -36,6 +36,7 @@ class Exercise(Base):
     hamstrings = Column(Float, default=0.0)
     quadriceps = Column(Float, default=0.0)
     calves = Column(Float, default=0.0)
+    forearms = Column(Float, default=0.0)
 
     # Relationships to other tables
     training_sets = relationship("TrainingSet", back_populates="exercise")  # Links to all TrainingSet rows for this Exercise
