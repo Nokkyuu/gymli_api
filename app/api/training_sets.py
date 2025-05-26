@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List, Optional
 from app import models, schemas
 from app.db import get_db
+from typing import Dict
 
 router = APIRouter()
 
@@ -70,3 +72,36 @@ def delete_training_set(id: int, db: Session = Depends(get_db)):
     db.delete(db_ts)
     db.commit()
     return {"ok": True}
+
+@router.get("/training_sets/last_dates", response_model=Dict[str, str])
+def read_last_training_dates_per_exercise(
+    user_name: str = Query(..., description="Username to get last training dates for"), 
+    db: Session = Depends(get_db)
+):
+    """
+    Get the last training date for each exercise for a specific user.
+    Returns a dictionary mapping exercise names to their last training dates.
+    This endpoint is optimized for performance compared to fetching all training sets.
+    """
+    
+    # Optimized query using JOIN and GROUP BY to get last date per exercise
+    query = (
+        db.query(
+            models.Exercise.name.label('exercise_name'),
+            func.max(models.TrainingSet.date).label('last_training_date')
+        )
+        .join(models.Exercise, models.TrainingSet.exercise_id == models.Exercise.id)
+        .filter(models.TrainingSet.user_name == user_name)
+        .group_by(models.Exercise.name, models.Exercise.id)
+    )
+    
+    results = query.all()
+    
+    # Convert results to dictionary format expected by the client
+    last_dates = {}
+    for row in results:
+        # Convert datetime to ISO string format for JSON serialization
+        if row.last_training_date:
+            last_dates[row.exercise_name] = row.last_training_date.isoformat()
+    
+    return last_dates
