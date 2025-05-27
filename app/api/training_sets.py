@@ -80,6 +80,57 @@ def create_training_set(ts: schemas.TrainingSetCreate, db: Session = Depends(get
     db.refresh(db_ts)
     return db_ts
 
+@router.post("/training_sets/bulk", response_model=List[schemas.TrainingSet])
+def create_training_sets_bulk(
+    training_sets: List[schemas.TrainingSetCreate], 
+    db: Session = Depends(get_db)
+):
+    """
+    Create multiple training sets in a single batch operation.
+    This endpoint is optimized for bulk imports and significantly reduces
+    the number of HTTP requests compared to creating sets individually.
+    
+    Args:
+        training_sets: List of training set data to create
+        
+    Returns:
+        List of created training sets with their assigned IDs
+        
+    Raises:
+        HTTPException: If there are validation errors or database issues
+    """
+    if not training_sets:
+        raise HTTPException(status_code=400, detail="Training sets list cannot be empty")
+    
+    if len(training_sets) > 1000:  # Reasonable limit to prevent abuse
+        raise HTTPException(status_code=400, detail="Cannot create more than 1000 training sets in a single request")
+    
+    created_sets = []
+    
+    try:
+        # Create all training set objects
+        for ts_data in training_sets:
+            db_ts = models.TrainingSet(**ts_data.dict())
+            db.add(db_ts)
+            created_sets.append(db_ts)
+        
+        # Commit all at once for better performance
+        db.commit()
+        
+        # Refresh all objects to get their IDs
+        for db_ts in created_sets:
+            db.refresh(db_ts)
+        
+        return created_sets
+        
+    except Exception as e:
+        # Rollback transaction on error
+        db.rollback()
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to create training sets in bulk: {str(e)}"
+        )
+
 @router.put("/training_sets/{id}", response_model=schemas.TrainingSet)
 def update_training_set(id: int, ts: schemas.TrainingSetCreate, db: Session = Depends(get_db)):
     """
