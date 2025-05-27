@@ -145,19 +145,7 @@ def update_training_set(id: int, ts: schemas.TrainingSetCreate, db: Session = De
     db.refresh(db_ts)
     return db_ts
 
-@router.delete("/training_sets/{id}", response_model=dict)
-def delete_training_set(id: int, db: Session = Depends(get_db)):
-    """
-    Delete a training set by its ID.
-    """
-    db_ts = db.query(models.TrainingSet).filter(models.TrainingSet.id == id).first()
-    if not db_ts:
-        raise HTTPException(status_code=404, detail="TrainingSet not found")
-    db.delete(db_ts)
-    db.commit()
-    return {"ok": True}
-
-@router.delete("/training_sets/clear", response_model=dict)
+@router.delete("/training_sets/bulk_clear", response_model=dict)
 def clear_training_sets(user_name: str = Query(...), db: Session = Depends(get_db)):
     """
     Clear all training sets for a user using efficient bulk delete.
@@ -174,3 +162,15 @@ def clear_training_sets(user_name: str = Query(...), db: Session = Depends(get_d
     
     db.commit()
     return {"message": f"Cleared {count} training sets"}
+
+@router.delete("/training_sets/{id}", response_model=dict)
+def delete_training_set(id: int, db: Session = Depends(get_db)):
+    """
+    Delete a training set by its ID.
+    """
+    db_ts = db.query(models.TrainingSet).filter(models.TrainingSet.id == id).first()
+    if not db_ts:
+        raise HTTPException(status_code=404, detail="TrainingSet not found")
+    db.delete(db_ts)
+    db.commit()
+    return {"ok": True}
