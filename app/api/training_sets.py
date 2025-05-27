@@ -156,3 +156,21 @@ def delete_training_set(id: int, db: Session = Depends(get_db)):
     db.delete(db_ts)
     db.commit()
     return {"ok": True}
+
+@router.delete("/training_sets/clear", response_model=dict)
+def clear_training_sets(user_name: str = Query(...), db: Session = Depends(get_db)):
+    """
+    Clear all training sets for a user using efficient bulk delete.
+    """
+    # Count first for the response message
+    count = db.query(models.TrainingSet).filter(
+        models.TrainingSet.user_name == user_name
+    ).count()
+    
+    # OPTIMIZED: Single bulk DELETE operation
+    db.query(models.TrainingSet).filter(
+        models.TrainingSet.user_name == user_name
+    ).delete()
+    
+    db.commit()
+    return {"message": f"Cleared {count} training sets"}
