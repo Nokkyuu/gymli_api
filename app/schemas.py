@@ -35,6 +35,7 @@ class ExerciseBase(BaseModel):
     gluteus_maximus: float = Field(0.0, ge=0.0, le=1.0)
     hamstrings: float = Field(0.0, ge=0.0, le=1.0)
     quadriceps: float = Field(0.0, ge=0.0, le=1.0)
+    forearms: float = Field(0.0, ge=0.0, le=1.0)  # ✅ ADD THIS LINE
     calves: float = Field(0.0, ge=0.0, le=1.0)
 
 class ExerciseCreate(ExerciseBase):
