@@ -86,3 +86,26 @@ class Workout(Base):
     name = Column(String, nullable=False)  # Name of the workout (e.g., "Push Day")
     units = relationship("WorkoutUnit", back_populates="workout", cascade="all, delete-orphan")
     # Relationship: deleting a Workout also deletes all its WorkoutUnits
+
+# Add these to your app/models.py file
+
+class Activity(Base):
+    """Activity table for tracking different types of physical activities."""
+    __tablename__ = "activities"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    name = Column(String, nullable=False)  # e.g., "Running", "Walking", "Rowing"
+    kcal_per_hour = Column(Float, nullable=False)  # User-defined calories per hour
+
+class ActivityLog(Base):
+    """Activity log table for tracking user's activity sessions."""
+    __tablename__ = "activity_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    activity_name = Column(String, nullable=False)  # Store activity name directly
+    date = Column(DateTime, nullable=False)
+    duration_minutes = Column(Integer, nullable=False)
+    calories_burned = Column(Float, nullable=False)  # Calculated from duration and kcal_per_hour
+    notes = Column(String, nullable=True)

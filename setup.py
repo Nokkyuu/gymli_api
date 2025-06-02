@@ -1,5 +1,5 @@
 from app.db import Base, engine
-from app.models import Animal, Exercise, TrainingSet, WorkoutUnit, Workout
+from app.models import Animal, Exercise, TrainingSet, WorkoutUnit, Workout, Activity, ActivityLog
 
-#run only once to create table
 Base.metadata.create_all(bind=engine)
+# This script initializes the database by creating all tables defined in the models.

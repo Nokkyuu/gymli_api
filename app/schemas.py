@@ -109,3 +109,38 @@ class WorkoutUnit(WorkoutUnitBase):
 
     class Config:
         orm_mode = True
+
+# =========================
+# Activity Schemas
+# =========================
+class ActivityBase(BaseModel):
+    name: str = Field(..., max_length=100)
+    kcal_per_hour: float = Field(..., gt=0)
+
+class ActivityCreate(ActivityBase):
+    user_name: str
+
+class Activity(ActivityBase):
+    id: int
+    user_name: str
+
+    class Config:
+        orm_mode = True
+
+# Activity Log Schemas
+class ActivityLogBase(BaseModel):
+    user_name: str
+    activity_name: str 
+    date: datetime
+    duration_minutes: int = Field(..., gt=0)
+    notes: Optional[str] = None
+
+class ActivityLogCreate(ActivityLogBase):
+    pass
+
+class ActivityLog(ActivityLogBase):
+    id: int
+    calories_burned: float
+
+    class Config:
+        orm_mode = True

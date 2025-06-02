@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api import animals, exercises, training_sets, workouts, workout_units
+from app.api import animals, exercises, training_sets, workouts, workout_units, activity_endpoints
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Gymli API")
@@ -18,6 +18,7 @@ app.include_router(exercises.router)
 app.include_router(training_sets.router)
 app.include_router(workouts.router)
 app.include_router(workout_units.router)
+app.include_router(activity_endpoints.router)
 
 @app.get("/")
 def read_root():
