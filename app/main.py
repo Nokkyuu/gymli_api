@@ -6,7 +6,7 @@ app = FastAPI(title="Gymli API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://icy-ground-0e9ef4303.6.azurestaticapps.net/", "https://gymli.brgmnn.de/", "*"],
+    allow_origins=["https://icy-ground-0e9ef4303.6.azurestaticapps.net/", "https://gymli.brgmnn.de/",],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
