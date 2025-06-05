@@ -109,3 +109,27 @@ class ActivityLog(Base):
     duration_minutes = Column(Integer, nullable=False)
     calories_burned = Column(Float, nullable=False)  # Calculated from duration and kcal_per_hour
     notes = Column(String, nullable=True)
+
+
+class FoodItem(Base):
+    __tablename__ = "food_items"
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)  # user-specific
+    name = Column(String, nullable=False)
+    kcal_per_100g = Column(Float, nullable=False)
+    protein_per_100g = Column(Float, nullable=False)
+    carbs_per_100g = Column(Float, nullable=False)
+    fat_per_100g = Column(Float, nullable=False)
+    notes = Column(String, nullable=True)
+
+class FoodLog(Base):
+    __tablename__ = "food_logs"
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    food_name = Column(String, nullable=False)  # store name for log consistency
+    date = Column(DateTime, nullable=False)
+    grams = Column(Float, nullable=False)
+    kcal_per_100g = Column(Float, nullable=False)
+    protein_per_100g = Column(Float, nullable=False)
+    carbs_per_100g = Column(Float, nullable=False)
+    fat_per_100g = Column(Float, nullable=False)

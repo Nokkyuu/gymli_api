@@ -144,3 +144,41 @@ class ActivityLog(ActivityLogBase):
 
     class Config:
         orm_mode = True
+
+### Food Schemas
+# ... (existing imports and schemas)
+
+class FoodItemBase(BaseModel):
+    name: str
+    kcal_per_100g: float
+    protein_per_100g: float
+    carbs_per_100g: float
+    fat_per_100g: float
+    notes: Optional[str] = None
+
+class FoodItemCreate(FoodItemBase):
+    user_name: str
+
+class FoodItem(FoodItemBase):
+    id: int
+    user_name: str
+    class Config:
+        orm_mode = True
+
+class FoodLogBase(BaseModel):
+    user_name: str
+    food_name: str
+    date: datetime
+    grams: float
+    kcal_per_100g: float
+    protein_per_100g: float
+    carbs_per_100g: float
+    fat_per_100g: float
+
+class FoodLogCreate(FoodLogBase):
+    pass
+
+class FoodLog(FoodLogBase):
+    id: int
+    class Config:
+        orm_mode = True
