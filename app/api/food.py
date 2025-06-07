@@ -19,6 +19,26 @@ def create_food(food: schemas.FoodItemCreate, db: Session = Depends(get_db)):
     db.refresh(db_food)
     return db_food
 
+@router.post("/foods/bulk", response_model=List[schemas.FoodItem])
+def create_foods_bulk(foods: List[schemas.FoodItemCreate], db: Session = Depends(get_db)):
+    if not foods:
+        raise HTTPException(status_code=400, detail="Food items list cannot be empty")
+    
+    if len(foods) > 1000:  # Add reasonable limit
+        raise HTTPException(status_code=400, detail="Cannot create more than 1000 food items in a single request")
+    
+    db_foods = []
+    for food in foods:
+        db_food = models.FoodItem(**food.dict())
+        db.add(db_food)
+        db_foods.append(db_food)
+    
+    db.commit()
+    for db_food in db_foods:
+        db.refresh(db_food)
+    
+    return db_foods
+
 @router.delete("/foods/{food_id}")
 def delete_food(food_id: int, user_name: str = Query(...), db: Session = Depends(get_db)):
     food = db.query(models.FoodItem).filter(models.FoodItem.id == food_id, models.FoodItem.user_name == user_name).first()
