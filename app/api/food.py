@@ -39,6 +39,23 @@ def create_foods_bulk(foods: List[schemas.FoodItemCreate], db: Session = Depends
     
     return db_foods
 
+@router.delete("/foods/bulk_clear")
+def bulk_clear_foods(user_name: str = Query(...), db: Session = Depends(get_db)):
+    """Clears all food items for a specific user using bulk delete"""
+    try:
+        # Count items before deletion for response
+        count = db.query(models.FoodItem).filter(models.FoodItem.user_name == user_name).count()
+        
+        # Perform bulk delete
+        db.query(models.FoodItem).filter(models.FoodItem.user_name == user_name).delete()
+        db.commit()
+        
+        return {"message": f"Successfully cleared {count} food items for user {user_name}"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to clear food items: {str(e)}")
+
+
 @router.delete("/foods/{food_id}")
 def delete_food(food_id: int, user_name: str = Query(...), db: Session = Depends(get_db)):
     food = db.query(models.FoodItem).filter(models.FoodItem.id == food_id, models.FoodItem.user_name == user_name).first()
