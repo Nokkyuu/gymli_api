@@ -58,10 +58,10 @@ class TrainingSetBase(BaseModel):
     weight: float
     repetitions: int
     set_type: int
-    base_reps: int
-    max_reps: int
-    increment: float
-    machine_name: Optional[str] = None
+    # base_reps: int
+    # max_reps: int
+    # increment: float
+    # machine_name: Optional[str] = None
 
 class TrainingSetCreate(TrainingSetBase):
     pass

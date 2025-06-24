@@ -53,10 +53,10 @@ class TrainingSet(Base):
     weight = Column(Float, nullable=False)  # Weight used
     repetitions = Column(Integer, nullable=False)  # Number of reps
     set_type = Column(Integer, nullable=False)  # Type of set (e.g., Warm, Work)
-    base_reps = Column(Integer, nullable=False)  # Expected base reps
-    max_reps = Column(Integer, nullable=False)  # Max reps for that set
-    increment = Column(Float, nullable=False)  # Increment used
-    machine_name = Column(String, nullable=True)  # Machine name, optional (for machine exercises) - still needed?
+    # base_reps = Column(Integer, nullable=False)  # Expected base reps
+    # max_reps = Column(Integer, nullable=False)  # Max reps for that set
+    # increment = Column(Float, nullable=False)  # Increment used
+    # machine_name = Column(String, nullable=True)  # Machine name, optional (for machine exercises) - still needed?
 
     # Relationship to Exercise
     exercise = relationship("Exercise", back_populates="training_sets")
