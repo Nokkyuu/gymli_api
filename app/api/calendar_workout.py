@@ -17,7 +17,7 @@ def create_calendar_workout(workout: schemas.CalendarWorkoutCreate, db: Session 
     db.add(db_workout)
     db.commit()
     db.refresh(db_workout)
-    return db_workout
+    return db_workout  # This already returns the full object with ID
 
 @router.delete("/calendar_workouts/{workout_id}")
 def delete_calendar_workout(workout_id: int, db: Session = Depends(get_db)):
