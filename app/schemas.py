@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
+from datetime import date
 
 class AnimalCreate(BaseModel):
     name: str = Field(..., examples=["Lion"])
@@ -179,6 +180,50 @@ class FoodLogCreate(FoodLogBase):
     pass
 
 class FoodLog(FoodLogBase):
+    id: int
+    class Config:
+        orm_mode = True
+
+### Calendar Schemas
+
+
+
+class CalendarNoteBase(BaseModel):
+    user_name: str
+    date: date
+    note: str
+
+class CalendarNoteCreate(CalendarNoteBase):
+    pass
+
+class CalendarNote(CalendarNoteBase):
+    id: int
+    class Config:
+        orm_mode = True
+
+class CalendarWorkoutBase(BaseModel):
+    user_name: str
+    date: date
+    workout: str
+
+class CalendarWorkoutCreate(CalendarWorkoutBase):
+    pass
+
+class CalendarWorkout(CalendarWorkoutBase):
+    id: int
+    class Config:
+        orm_mode = True
+
+class PeriodBase(BaseModel):
+    user_name: str
+    type: str
+    start_date: date
+    end_date: date
+
+class PeriodCreate(PeriodBase):
+    pass
+
+class Period(PeriodBase):
     id: int
     class Config:
         orm_mode = True

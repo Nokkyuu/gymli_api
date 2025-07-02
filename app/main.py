@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends, Header
-from app.api import activities, animals, exercises, training_sets, workouts, workout_units, food
+from app.api import activities, animals, exercises, training_sets, workouts, workout_units, food, calendar_note, calendar_workout, period
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
@@ -30,6 +30,9 @@ app.include_router(workouts.router, dependencies=[Depends(verify_api_key)])
 app.include_router(workout_units.router, dependencies=[Depends(verify_api_key)])
 app.include_router(activities.router, dependencies=[Depends(verify_api_key)])
 app.include_router(food.router, dependencies=[Depends(verify_api_key)])
+app.include_router(calendar_note.router, dependencies=[Depends(verify_api_key)])
+app.include_router(calendar_workout.router, dependencies=[Depends(verify_api_key)])
+app.include_router(period.router, dependencies=[Depends(verify_api_key)])
 
 @app.get("/")
 def read_root():

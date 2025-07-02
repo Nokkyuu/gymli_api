@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from app.db import Base
 
@@ -133,3 +133,25 @@ class FoodLog(Base):
     protein_per_100g = Column(Float, nullable=False)
     carbs_per_100g = Column(Float, nullable=False)
     fat_per_100g = Column(Float, nullable=False)
+
+class CalendarNote(Base):
+    __tablename__ = "calendar_notes"
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    date = Column(Date, nullable=False)
+    note = Column(String, nullable=False)
+
+class CalendarWorkout(Base):
+    __tablename__ = "calendar_workouts"
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    date = Column(Date, nullable=False)
+    workout = Column(String, nullable=False)
+
+class Period(Base):
+    __tablename__ = "periods"
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    type = Column(String, nullable=False)
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
