@@ -54,9 +54,9 @@ class TrainingSet(Base):
     repetitions = Column(Integer, nullable=False)
     set_type = Column(Integer, nullable=False)
     phase = Column(String, nullable=True)           
-    myoreps = Column(Boolean, nullable=True)        
+    myoreps = Column(Boolean, nullable=True)       
     # Relationship to WorkoutUnit
-    workout_units = relationship("WorkoutUnit", back_populates="training_set")
+    # workout_units = relationship("WorkoutUnit", back_populates="training_set")
 
     # Relationship to Exercise
     exercise = relationship("Exercise", back_populates="training_sets")
