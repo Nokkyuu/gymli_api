@@ -190,7 +190,7 @@ class FoodLog(FoodLogBase):
 class CalendarNoteBase(BaseModel):
     user_name: str
     date: date
-    note: str
+    note: Optional[str] = None  # Change from str to Optional[str] = None
 
 class CalendarNoteCreate(CalendarNoteBase):
     pass
@@ -215,7 +215,7 @@ class CalendarWorkout(CalendarWorkoutBase):
 
 class PeriodBase(BaseModel):
     user_name: str
-    type: str
+    type: Optional[str] = None  # Change from str to Optional[str] = None
     start_date: date
     end_date: date
 

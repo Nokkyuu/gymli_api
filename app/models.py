@@ -75,17 +75,16 @@ class WorkoutUnit(Base):
 
     # Relationships
     exercise = relationship("Exercise", back_populates="workout_units")  # Link to Exercise
-    workout = relationship("Workout", back_populates="units")  # Link to parent Workout
+    workout = relationship("Workout", back_populates="workout_units")  # Link to parent Workout
 
 # The Workout table represents a user-defined workout, which consists of multiple WorkoutUnits.
 class Workout(Base):
     __tablename__ = "workouts"
 
-    id = Column(Integer, primary_key=True, index=True)  # Unique ID
-    user_name = Column(String, nullable=False, index=True)  # User-specific
-    name = Column(String, nullable=False)  # Name of the workout (e.g., "Push Day")
-    units = relationship("WorkoutUnit", back_populates="workout", cascade="all, delete-orphan")
-    # Relationship: deleting a Workout also deletes all its WorkoutUnits
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    name = Column(String, nullable=False)
+    workout_units = relationship("WorkoutUnit", back_populates="workout", cascade="all, delete-orphan")
 
 # Add these to your app/models.py file
 
