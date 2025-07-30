@@ -10,7 +10,7 @@ app.add_middleware(
     allow_origins=["https://icy-ground-0e9ef4303.6.azurestaticapps.net", "https://gymli.brgmnn.de", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"], 
-    allow_headers=["Content-Type", "Authorization", "Accept", "X-API-Key"],  # Add X-API-Key
+    allow_headers=["Content-Type", "Authorization", "Accept", "X-API-Key"],  
 )
 
 API_KEY = os.getenv("API_KEY")
@@ -38,7 +38,7 @@ app.include_router(period.router, dependencies=[Depends(verify_api_key)])
 def read_root():
     return {"status": "API is running"}
 
-# Keep this endpoint public for health checks
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}

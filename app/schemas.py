@@ -59,10 +59,9 @@ class TrainingSetBase(BaseModel):
     weight: float
     repetitions: int
     set_type: int
-    # base_reps: int
-    # max_reps: int
-    # increment: float
-    # machine_name: Optional[str] = None
+    phase: Optional[str] = None         
+    myoreps: Optional[bool] = False
+    
 
 class TrainingSetCreate(TrainingSetBase):
     pass

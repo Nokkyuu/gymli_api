@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Date, Boolean
 from sqlalchemy.orm import relationship
 from app.db import Base
 
@@ -46,17 +46,17 @@ class Exercise(Base):
 class TrainingSet(Base):
     __tablename__ = "training_sets"
 
-    id = Column(Integer, primary_key=True, index=True)  # Unique integer ID
-    user_name = Column(String, nullable=False, index=True)  # User the set belongs to
-    exercise_id = Column(Integer, ForeignKey("exercises.id"), nullable=False)  # Foreign key linking to the Exercise table
-    date = Column(DateTime, nullable=False)  # Date/time the set was performed
-    weight = Column(Float, nullable=False)  # Weight used
-    repetitions = Column(Integer, nullable=False)  # Number of reps
-    set_type = Column(Integer, nullable=False)  # Type of set (e.g., Warm, Work)
-    # base_reps = Column(Integer, nullable=False)  # Expected base reps
-    # max_reps = Column(Integer, nullable=False)  # Max reps for that set
-    # increment = Column(Float, nullable=False)  # Increment used
-    # machine_name = Column(String, nullable=True)  # Machine name, optional (for machine exercises) - still needed?
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False, index=True)
+    exercise_id = Column(Integer, ForeignKey("exercises.id"), nullable=False)
+    date = Column(DateTime, nullable=False)
+    weight = Column(Float, nullable=False)
+    repetitions = Column(Integer, nullable=False)
+    set_type = Column(Integer, nullable=False)
+    phase = Column(String, nullable=True)           
+    myoreps = Column(Boolean, nullable=True)        
+    # Relationship to WorkoutUnit
+    workout_units = relationship("WorkoutUnit", back_populates="training_set")
 
     # Relationship to Exercise
     exercise = relationship("Exercise", back_populates="training_sets")
